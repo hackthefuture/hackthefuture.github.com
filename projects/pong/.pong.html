@@ -1,0 +1,190 @@
+<html>
+  <head>
+    <script language="javascript" src="http://code.jquery.com/jquery-1.6.1.js"></script>
+    <title>Unfinished Pong</title>
+    <style type="text/css">
+      #gamearea { 
+        position: relative;
+        background-color: black;
+        overflow: hidden;
+        width: 500px;
+        height: 500px;
+      }
+      #paddle1 { position: absolute; 
+        position: absolute; 
+        background-color: white;
+        top: 230;
+        left: 10;
+        width : 7px;
+        height: 40px;
+      }
+      #paddle2  {
+        position: absolute; 
+        background-color: white;
+        top: 230;
+        left: 483;
+        width : 7px;
+        height: 40px;
+      }
+      #ball { 
+        position: absolute; 
+        background-color: white;
+        top: 247;F
+        left: 247;
+        width : 10px;
+        height: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Unfinished Pong</h1>
+    <!-- Do not edit this -->
+    <div id="gameinfo">
+      <span id="player1-info">
+        <span id="player1-name" class="name">
+          Player 1
+        </span>
+        <span id="player1-score">
+          0
+        </span>
+      </span>
+      <span id="player2-info">
+        <span id="player2-name" class="name">
+          Player 2
+        </span>
+        <span id="player2-score">
+          0
+        </span>
+      </span>
+    </div>
+    <hr>
+    <div>
+        <div id="gamearea" style="float:left;">
+          <!-- left blank -->
+          <div id="ball">
+          </div>
+          <div id="paddle1">
+          </div>
+          <div id="paddle2">
+          </div>
+        </div>
+    <div style="float:left; margin:20px;">
+        <h3>This game of pong is unfinished!</h3>
+        <ul>
+            <li>The paddles keep sliding</li>
+            <li>The game never ends</li>
+        </ul>
+        <h3>Should we finish it or hack it?</h3>
+        <ul>
+            <li>Can you make the paddles stop sliding?</li>
+            <li>Can you make the ball go faster?</li>
+            <li>Can you make the paddles bigger?</li>
+            <li>Think of something else fun to try</li>
+        </ul>
+    </div>
+</div>
+    <!-- Put your code inside this script tag -->
+<script type="text/javascript">
+ // Demonstrate CLASS and ID lookup
+$(".name").after(':')
+$("#gameinfo").css('width', '500px');
+$("#player2-info").css('float', 'right');
+
+//Show how to do prompt stuff
+// this is the FIRST time they'll have seen variables
+input =  prompt("What is player 1's name?");
+$("#player1-name").html(input);
+input = prompt("What is player 2's name?");
+$("#player2-name").html(input);
+
+//Set up the ball
+ball = $("#ball");
+ball_x = 247;
+ball_y = 247;
+ball_dx = 0.8;
+ball_dy = 1.1;
+p1 = $("#paddle1");
+p2 = $("#paddle2");
+// we never move paddles 
+p1_y = 230;
+p2_y = 230;
+p1_dy = 0;
+p2_dy = 0;
+
+p1_score = 0;
+p2_score = 0;
+
+gametick = function() {
+ ball_x += ball_dx;
+ ball_y += ball_dy;
+ p1_y = Math.min(Math.max(p1_y + p1_dy, 0), 460);
+ p2_y = Math.min(Math.max(p2_y + p2_dy, 0), 460);
+
+ p1.css('top', p1_y);
+ p2.css('top', p2_y);
+ ball.css('top', ball_y);
+ ball.css('left', ball_x);
+ 
+ if(ball_x > 490) {
+  p1_score = p1_score += 1;
+  ball_x = 247;
+  ball_y = 247;
+  $("#player1-score").html(p1_score);
+ }
+  if(ball_x < 10) {
+    p2_score = p2_score += 1;
+    ball_x = 247;
+    ball_y = 247;
+    $("#player2-score").html(p2_score);
+ }
+
+if (ball_y > 489 || ball_y < 1) {
+  ball_dy = ball_dy * -1;
+ }
+ 
+ if (ball_x >= 473 && ball_y > p2_y && ball_y < p2_y + 40) {
+   ball_dx = -1.1
+ }
+
+ if (ball_x <= 17 && ball_y > p1_y && ball_y < p1_y + 40) {
+   ball_dx = 1.1;
+ }
+
+ setTimeout('gametick()', 5);
+}
+gametick();
+
+$(document).keydown(function(e) {
+    if(e.keyCode == 40) {
+    p2_dy = 1.5;
+    }
+    if(e.keyCode == 38) {
+    p2_dy = -1.5;
+    }
+
+    if(e.keyCode == 83) {
+    p1_dy = 1.5;
+    }
+    if(e.keyCode == 87) {
+    p1_dy = -1.5;
+    }
+});
+$(document).keyup(function(e) {
+    if(e.keyCode == 59) {
+    p1_dy = 0;
+    }
+    if(e.keyCode == 65) {
+    p1_dy = 0;
+    }
+
+    if(e.keyCode == 83) {
+    p2_dy = 0;
+    }
+    if(e.keyCode == 76) {
+    p2_dy = 0;
+    }
+});
+
+</script>
+  </body>
+</html>

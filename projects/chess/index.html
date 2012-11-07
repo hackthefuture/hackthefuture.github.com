@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html><head>
+<title>Unfinished Chess</title>
+</head>
+<body>
+<h1>Unfinished Chess</h1>
+<div id="board" style="float:left;">
+</div>
+<div style="float:left; margin:20px;">
+    <h3>This game of chess is unfinished!</h3>
+    <ul>
+        <li>You can't castle</li>
+        <li>You can't capture "en passant" (don't worry if you don't know what that means)</li>
+        <li>There's no such thing as being in check</li>
+        <li>You win when you capturing the enemy king</li>
+    </ul>
+    <h3>Instead of finishing it, let's hack it!</h3>
+    <ul>
+        <li>Can you make white start with all queens?</li>
+        <li>Can you make black go first?</li>
+        <li>Can you make knights move like bishops?</li>
+        <li>Think of something else fun to try</li>
+    </ul>
+</div>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.js"></script>
+<script type="text/javascript">
+Board = function(board_div) {
+    this.board_div = board_div;
+    
+    this.reset = function() {
+        this.whos_turn = 'w';
+        this.squares = [['br', 'bn', 'bb', 'bq', 'bk', 'bb', 'bn', 'br'],
+                        ['bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp', 'bp'],
+                        [null, null, null, null, null, null, null, null],
+                        [null, null, null, null, null, null, null, null],
+                        [null, null, null, null, null, null, null, null],
+                        [null, null, null, null, null, null, null, null],
+                        ['wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp', 'wp'],
+                        ['wr', 'wn', 'wb', 'wq', 'wk', 'wb', 'wn', 'wr']];
+        this.draw();
+    };
+    
+    this.in_square = function(square) {
+        return this.squares[square[1]][square[0]];
+    };
+
+    this._get_img_pos = function(y, x) {
+        var piece = this.squares[y][x];
+        if(piece == null) {
+            return '40px 0px';
+        }
+        var lastpart = ' 0px';
+        if(piece.charAt(0) == 'w') {
+            lastpart = ' 40px';
+        }
+        var firstpart = '';
+        if(piece.charAt(1) == 'p') {
+            firstpart = '0px';
+        } else if(piece.charAt(1) == 'k') {
+            firstpart = '80px';
+        } else if(piece.charAt(1) == 'q') {
+            firstpart = '120px';
+        } else if(piece.charAt(1) == 'b') {
+            firstpart = '160px';
+        } else if(piece.charAt(1) == 'n') {
+            firstpart = '200px';
+        } else if(piece.charAt(1) == 'r') {
+            firstpart = '240px';
+        }
+        return firstpart + lastpart;
+    };
+    
+
+    this.draw = function() {
+        var _this = this;
+        this.board_div.empty();
+        var t = $('<table>').css({'display': 'block', 'padding': '1px solid black'}).attr('id', 'board_table');
+        for(var y=0; y<=7; y++) {
+            var r = $('<tr>').attr('id', 'r'+y);
+            for(var x=0; x<=7; x++) {
+                var color = "white";
+                if(((x+y)%2)) {
+                    color = "lightgrey";
+                }
+                var square = $('<td>')
+                    .attr({'id': y+''+x,
+                       'x': x,
+                       'y': y
+                      })
+                    .css({'background-color': color,
+                      'background-position': (this._get_img_pos(y, x)),
+                      'background-image': 'url("http://www.hackthefuture.org/static/projects/chess/chesspieces_sprite.png")',
+                      'height': '40px',
+                      'width': '40px'
+                     })
+                    .append(" ");
+                square.click(function() {
+                    var x = 1 * $(this).attr('x');
+                    var y = 1 * $(this).attr('y');
+                    _this.click(x, y);
+                });
+                r.append(square);
+            }
+            t.append(r);
+        }
+        this.board_div.append(t);
+    };
+    
+    this.move_start = null;
+    this.move_end = null;
+    this.click = function(x, y) {
+        if(this.move_start == null) {
+            if(this.squares[y][x] != null && this.squares[y][x][0] == this.whos_turn) {
+                this.move_start = [x, y];
+            }
+        } else {
+            this.move_end = [x, y];
+            this.attempt_move();
+            this.move_start = null;
+            this.move_end = null;
+        };
+    };
+    
+    this.is_move_allowed = function(start, end) {
+        if(start[0] == end[0] && start[1] == end[1]) {
+            console.log("Trying to move a piece to where it started");
+            return false;
+        };
+        if(this.in_square(end) != null && this.in_square(start)[0] == this.in_square(end)[0]) {
+            console.log("Trying to capture your own piece");
+            return false;
+        }
+        var piece = this.in_square(start)[1];
+        if(piece == 'p') {
+            return this.is_pawn_move_allowed(start, end);
+        }
+        if(piece == 'n') {
+            return this.is_knight_move_allowed(start, end);
+        }
+        if(piece == 'k') {
+            return this.is_king_move_allowed(start, end);
+        }
+        if(piece == 'b') {
+            return this.is_bishop_move_allowed(start, end);
+        }
+        if(piece == 'r') {
+            return this.is_rook_move_allowed(start, end);
+        }
+        if(piece == 'q') {
+            return (this.is_rook_move_allowed(start, end) || this.is_bishop_move_allowed(start, end));
+        }
+        return true;
+    };
+    
+    this.is_bishop_move_allowed = function(start, end) {
+        var x_direction = 1;
+        if (start[0] > end[0]) {
+            x_direction = -1;
+        }
+        var y_direction = 1;
+        if (start[1] > end[1]) {
+            y_direction = -1;
+        }
+        var walk = [start[0], start[1]];
+        while(true) {
+            walk[0] = walk[0] + x_direction;
+            walk[1] = walk[1] + y_direction;
+            if(walk[0] < 0 || walk[0] > 7 || walk[1] < 0 || walk[1] > 7) {
+                console.log("Square not on diagonal line from piece");
+                return false;
+            }
+            if(walk[0] == end[0] && walk[1] == end[1]) {
+                return true;
+            }
+            if(this.in_square(walk) != null) {
+                console.log("Path blocked");
+                return false;
+            }
+        }
+    };
+    
+    this.is_rook_move_allowed = function(start, end) {
+        if (start[0] != end[0] && start[1] != end[1]) {
+            console.log("Rooks can only move in straight lines");
+            return false;
+        }
+        var direction = 0;
+        var move_type = 0;
+        if (start[0] < end[0]) {
+            direction = 1;
+            move_type = 0;
+        }
+        if (start[0] > end[0]) {
+            direction = -1;
+            move_type = 0;
+        }
+        if (start[1] < end[1]) {
+            direction = 1;
+            var move_type = 1;
+        }
+        if (start[1] > end[1]) {
+            direction = -1;
+            move_type = 1;
+        }
+        var walk = [start[0], start[1]];
+        while(true) {
+            walk[move_type] = walk[move_type] + direction;
+            if(walk[move_type] < 0 || walk[move_type] > 7) {
+                console.log("Square not on straight line from piece");
+                return false;
+            }
+            if(walk[move_type] == end[move_type]) {
+                return true;
+            }
+            if(this.in_square(walk) != null) {
+                console.log("Path blocked");
+                return false;
+            }
+        }
+    };
+    
+    this.is_knight_move_allowed = function(start, end) {
+        var distance_x = Math.abs(start[0] - end[0]);
+        var distance_y = Math.abs(start[1] - end[1]);
+        if(distance_x == 1 && distance_y == 2) {
+            return true;
+        }
+        if(distance_x == 2 && distance_y == 1) {
+            return true;
+        }
+        return false;
+    };
+    
+    this.is_king_move_allowed = function(start, end) {
+        var distance_x = Math.abs(start[0] - end[0]);
+        var distance_y = Math.abs(start[1] - end[1]);
+        return (distance_x <= 1 && distance_y <= 1);
+    };
+    
+    this.is_pawn_move_allowed = function(start, end) {
+        var direction = -1;
+        if(this.whos_turn == 'b') {
+            direction = 1;
+        }
+        if(start[0] == end[0] && this.in_square(end) != null) {
+            console.log("Pawns can't capture when moving forward")
+            return false;
+        }
+        if(this.whos_turn == 'b' && start[1] == 1 && end[1] == 3 && start[0] == end[0] && this.in_square([start[0], start[1] + direction]) == null) {
+            // Pawns can move that far if it's their first move
+            return true;
+        }
+        if(this.whos_turn == 'w' && start[1] == 6 && end[1] == 4 && start[0] == end[0] && this.in_square([start[0], start[1] + direction]) == null) {
+            // Pawns can move that far if it's their first move
+            return true;
+        }
+        if(end[1] != start[1] + direction) {
+            console.log("Pawns can't move that far");
+            return false;
+        }
+        if(Math.abs(end[0] - start[0]) == 1) {
+            console.log("Trying to do a pawn capture");
+            return this.in_square(end) != null;
+        }
+        return end[0] == start[0];
+    };
+    
+    this.attempt_move = function() {
+        var start = this.move_start;
+        var end = this.move_end;
+        if(this.is_move_allowed(start, end)) {
+            if(this.in_square(end) != null && this.in_square(end)[1] == 'k') {
+                alert("You win!");
+                this.reset();
+                return;
+            }
+            this.squares[end[1]][end[0]] = this.squares[start[1]][start[0]];
+            this.squares[start[1]][start[0]] = null;
+            this.draw();
+            if(this.whos_turn == 'w') {
+                this.whos_turn = 'b';
+            } else {
+                this.whos_turn = 'w';
+            }
+        } else {
+            alert("That move isn't allowed");
+        }
+    };
+
+    this.reset();
+
+    return this;
+};
+
+
+$(document).ready(function() {
+    var board_div = $('#board');
+    var board = new Board(board_div);
+    board.reset();
+});
+</script>
+</body> </html>

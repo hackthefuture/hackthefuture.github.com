@@ -1,0 +1,61 @@
+<html>
+<style type="text/css">
+  body {
+    /*overflow:hidden;*/
+  }
+  #editor {
+    width:100%;
+    height:100%;
+    resize:none;
+    border:0px;
+    font-family:Monaco, Consolas, monospace;
+  }
+  #rendered {
+    width:100%;
+  }
+  #editorDiv {
+    width:100%;
+    height:80%;
+  }
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="http://www.hackthefuture.org/static/js/beautify-html.js"></script>
+<body>
+<div id="editorDiv">
+  <textarea id="editor"></textarea>
+</div>
+<button id="edit">Hack it!</button>
+<div id="rendered"></div>
+</body>
+<script type="text/javascript">
+$("#editor").keyup( function() {
+  $("#rendered").html('').html($(this).val());
+});
+
+$.ajax({
+    type: "get",
+    dataType: "html",
+    url: "http://www.hackthefuture.org/static/projects/chess/chess.html",
+    data: {},
+    success: function(response) {
+        var pretty = style_html(response); 
+        $("#rendered").html('').html(pretty);
+        $("#editor").text(pretty);
+    },
+    error: function(response) {
+    }
+});
+var editButton = $("#edit");
+$(function() {
+        $("#edit").live('click', function(event) {            
+            $("#editorDiv").animate({ opacity: 'toggle', height: 'toggle' }, "fast"); 
+            editButton.text() == "Hack it!" ? editButton.text("See what changed!") : editButton.text("Hack it!");
+            $("#editor").val( style_html( $("#editor").val()  )  );
+            return false;
+        });
+    });
+
+$("#editorDiv").animate({ opacity: 'toggle', height: 'toggle' }, 1000);
+</script>
+</html>
+
