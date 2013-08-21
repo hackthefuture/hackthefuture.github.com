@@ -1,6 +1,5 @@
-* { padding: 0; margin: 0; }
-
 body {
+    padding: 0; margin: 0;
 font-family: Verdana, Geneva, sans-serif;
 font-size: 12px;
 background: #06C;
@@ -131,6 +130,14 @@ margin:20px 0px 0px 50px;
 width:600px;
 }
 
+.section ul li {
+font-size:15px;
+line-height:22px;
+color:#ffffff;
+font-family: Verdana, Geneva, sans-serif;
+margin:20px 0px 0px 50px;
+}
+
 .textlist li {
 font-size:15px;
 line-height:22px;
@@ -167,22 +174,25 @@ width:600px;
 #gallery {
 width:800px;
 padding-top:35px; 
-padding-left:35px;
+padding-left:25px;
 text-align:center;
 overflow:hidden;
+margin: 0;
 }
 
 #gallery ul {
+padding: 0; margin: 0;
 width:800px;
 height: auto;
 overflow: hidden;
 }
 
 #gallery ul li {
+padding: 0;
 float: left;
 text-align:left;
 margin-top:5px;
-margin-rightt:5px;
+margin-right:5px;
 margin-bottom:0px;
 margin-left:5px;
 display: inline;		
