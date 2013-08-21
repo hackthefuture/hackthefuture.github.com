@@ -70,7 +70,7 @@ padding: 0px 0px 0px 0px;
 height: auto;
 }
 
-.lable{
+.label {
 background:#ffffff;
 color:#09F;
 font-size:15px;	
@@ -107,7 +107,7 @@ border:0px;
 float:left;
 }
 
-.section{
+.section {
 margin:0px;
 min-height:1000px;
 max-height:auto;
@@ -116,13 +116,13 @@ width:800px;
 float:left;
 }
 
-.section h2{
+.section h2 {
 margin:0px 0px 0px 50px;
 color:#09F;
 width:600px;
 }
 
-.section p{
+.section p {
 font-size:15px;
 line-height:22px;
 color:#ffffff;
@@ -140,13 +140,13 @@ margin:20px 0px 0px 50px;
 width:600px;
 }
 
-.textlist a:link {color: white;}
-.textlist a:visited {color: white;}
-.textlist a:active {color: white;}
-.textlist a:hover {color: white;}
-.textlist a:focus {color: white;}
+body a:link {color: white;}
+body a:visited {color: white;}
+body a:active {color: white;}
+body a:hover {color: white;}
+body a:focus {color: white;}
 
-.section h3{
+.section h3 {
 margin:20px 0px 0px 50px;
 font-size:20px;
 line-height:22px;
@@ -188,9 +188,9 @@ margin-left:5px;
 display: inline;		
 }
 
-.black{
+.black {
 color:#fff;
-background: #639  url() repeat-x bottom left;
+background: #639 repeat-x bottom left;
 }
 
 img {
