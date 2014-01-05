@@ -1,6 +1,6 @@
 = Hack the Future Website 
 
-The source code for website at http://hackthefuture.org[hackthefuture.org]
+The source code for the website at http://hackthefuture.org[hackthefuture.org]
 
 == Implementation Details
 
@@ -10,11 +10,11 @@ The current content is completely static although some interactive features are 
 
 === Published with GitHub Pages.
 
-The website is automatically published with each commit to the master branch by GitHub Pages.
+The website is automatically published with each commit to the master branch by http://pages.github.com[GitHub Pages].
 
 === DNS resolution
 
-The domain +hackthefuture.org+ is https://help.github.com/articles/setting-up-a-custom-domain-with-pages[configured] to point to the GitHub pages server. The GitHub pages server can also be accessed at http://hackthefuture.github.io[hackthefuture.github.io] but is configured via the https://github.com/hackthefuture/hackthefuture.github.com/blob/master/CNAME[CNAME] file to redirect to http://hackthefuture.org[hackthefuture.org]
+The domain +hackthefuture.org+ is https://help.github.com/articles/setting-up-a-custom-domain-with-pages[configured] to point to the GitHub Pages server. The GitHub Pages server can also be accessed at http://hackthefuture.github.io[hackthefuture.github.io] but is configured via the https://github.com/hackthefuture/hackthefuture.github.com/blob/master/CNAME[CNAME] file to redirect to http://hackthefuture.org[hackthefuture.org]
 
 == Contribution Guidelines
 
@@ -27,6 +27,8 @@ The preferred process for making contributions is the following:
 . Make and test your changes on your local system
 . Commit and push your changes to your fork
 . Submit a pull request
+
+The GitHub https://help.github.com/articles/fork-a-repo[Fork a Repo] help page has the details of how to do this.
 
 == Testing Locally
 
