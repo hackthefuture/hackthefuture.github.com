@@ -1,0 +1,42 @@
+= Hack the Future Website 
+
+The source code for the website at http://hackthefuture.org[hackthefuture.org]
+
+== Implementation Details
+
+=== 100% Static Content
+
+The current content is completely static although some interactive features are provided by JavaScript and social plugins.
+
+=== Published with GitHub Pages.
+
+The website is automatically published with each commit to the master branch by http://pages.github.com[GitHub Pages].
+
+=== DNS resolution
+
+The domain +hackthefuture.org+ is https://help.github.com/articles/setting-up-a-custom-domain-with-pages[configured] to point to the GitHub Pages server. The GitHub Pages server can also be accessed at http://hackthefuture.github.io[hackthefuture.github.io] but is configured via the https://github.com/hackthefuture/hackthefuture.github.com/blob/master/CNAME[CNAME] file to redirect to http://hackthefuture.org[hackthefuture.org]
+
+== Contribution Guidelines
+
+Unless you're fixing a typo or an obvious bug it's best to discuss changes with other contributors before working on them.  The best place to discuss changes is on the http://groups.google.com/group/htf-volunteers[Hack the Future Volunteers] Google Group. (Alternatively you could create a GitHub Issue for the proposed changes.)
+
+The preferred process for making contributions is the following:
+
+. Fork this Repo
+. Use Git to make a clone of your fork
+. Make and test your changes on your local system
+. Commit and push your changes to your fork
+. Submit a pull request
+
+The GitHub https://help.github.com/articles/fork-a-repo[Fork a Repo] help page has the details of how to do this.
+
+== Testing Locally
+
+To test the website or your changes locally, you'll probably want to use a local HTTP server because the site uses directory links, e.g. +/next/+ which is resolved to +/next/index.html+ by the GitHub server.  Your local server will need to do the same thing.
+
+Using a local HTTP server should also help with some of the social media plugins.
+
+== About this README
+
+This README is in http://asciidoctor.org[AsciiDoctor format]. It's easy to get started using the http://asciidoctor.org/docs/asciidoc-syntax-quick-reference/[Syntax Quick Reference].  There is built-in support from GitHub, the https://chrome.google.com/webstore/detail/asciidoctorjs-live-previe/iaalpfgpbocpdfblpnhhgllgbdbchmia?hl=en[Asciidoctor.js Live Preview] for Chrome, a https://github.com/asciidoctor/asciidoctor-firefox-addon[Firefox Extension] and http://asciidoctor.org/docs/[other tools] available.
+
