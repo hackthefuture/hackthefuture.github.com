@@ -19,7 +19,7 @@
   }
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.js"></script>
-<script type="text/javascript" src="http://www.hackthefuture.org/static/js/beautify-html.js"></script>
+<script type="text/javascript" src="/projects/beautify-html.js"></script>
 <body>
 <div id="editorDiv">
   <textarea id="editor"></textarea>
@@ -35,7 +35,7 @@ $("#editor").keyup( function() {
 $.ajax({
     type: "get",
     dataType: "html",
-    url: "http://www.hackthefuture.org/static/projects/chess/chess.html",
+    url: "/projects/chess",
     data: {},
     success: function(response) {
         var pretty = style_html(response); 
